@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow(L"2163_色変");
+	win->CreateGameWindow(L"LE3C_11_サクライ_ショウセイ");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();

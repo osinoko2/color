@@ -747,6 +747,7 @@ void GameScene2::ChangePhase()
 	case Phase::kNextStage:
 		finished_ = true;
 
+
 		break;
 	}
 }
