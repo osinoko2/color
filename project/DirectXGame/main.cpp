@@ -48,7 +48,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow(L"2163_色変");
+	win->CreateGameWindow(L"LE3C_08_サクライ_ショウセイ");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
@@ -101,10 +101,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
-		// ゲームシーンの毎フレーム処理
-		//gameScene->Update();
 
-		//titleScene->Update();
 		// シーン切り替え
 		ChangeScene();
 		// 現在シーン更新
