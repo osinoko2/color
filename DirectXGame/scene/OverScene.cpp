@@ -1,7 +1,6 @@
-#include "ClearScene.h"
-#include <numbers>
+#include "OverScene.h"
 
-void ClearScene::Initialize() {
+void OverScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	EnterWorldTransform_.Initialize();
 	viewProjection_.Initialize();
@@ -10,19 +9,17 @@ void ClearScene::Initialize() {
 	// 天球3Dモデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	// 天球の初期化
-	skydome_->Initialize(modelSkydome_,&viewProjection_);
+	skydome_->Initialize(modelSkydome_, &viewProjection_);
 	Entermodel_ = Model::CreateFromOBJ("Enter", true);
-	ClearBestmodel_ = Model::CreateFromOBJ("ClearBest", true);
+	Overmodel_ = Model::CreateFromOBJ("Over", true);
 }
 
-void ClearScene::Update() {
-
+void OverScene::Update() {
 	// 天球の更新
 	skydome_->Update();
 }
 
-void ClearScene::Draw() {
-
+void OverScene::Draw() {
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 	Model::PreDraw(commandList);
 
@@ -31,7 +28,7 @@ void ClearScene::Draw() {
 
 	Entermodel_->Draw(EnterWorldTransform_, viewProjection_);
 
-	ClearBestmodel_->Draw(EnterWorldTransform_, viewProjection_);
+	Overmodel_->Draw(EnterWorldTransform_, viewProjection_);
 
 	Model::PostDraw();
 }

@@ -58,7 +58,7 @@ private:
 	Rect movableArea_ = {0, 100, 0, 100};
 
 	// 追従対象の各方向へのカメラ移動範囲
-	static inline const Rect margin = {-9.0f, 0.0f, -5.0f, 5.0f};
+	static inline const Rect margin = {-9.0f, 0.0f, -5.0f, 7.0f};
 
 	// 座標補間割合
 	static inline const float kInterpolationRate = 0.1f;

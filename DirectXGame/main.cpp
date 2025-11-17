@@ -11,12 +11,14 @@
 #include "WinApp.h"
 #include "ClearScene.h"
 #include "Rulescene.h"
+#include "OverScene.h"
 
 GameScene* gameScene = nullptr;
 GameScene2* gameScene2 = nullptr;
 TitleScene* titleScene = nullptr;
 ClearScene* clearScene = nullptr;
 RuleScene* ruleScene = nullptr;
+OverScene* overScene = nullptr;
 
 enum class Scene {
 
@@ -27,6 +29,7 @@ enum class Scene {
 	kGame,
 	kGame2,
 	kClear,
+	kOver
 };
 
 Scene scene = Scene::kUnknown;
@@ -48,7 +51,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow(L"LE3C_11_サクライ_ショウセイ");
+	win->CreateGameWindow(L"LE3C_08_サクライ_ショウセイ");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
@@ -83,7 +86,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 #pragma endregion
 
 	// ゲームシーンの初期化
-	/*gameScene = new GameScene();
+	/*scene = Scene::kGame;
+	gameScene = new GameScene();
 	gameScene->Initialize();*/
 
 	scene = Scene::kTitle;
@@ -101,10 +105,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
-		// ゲームシーンの毎フレーム処理
-		//gameScene->Update();
 
-		//titleScene->Update();
 		// シーン切り替え
 		ChangeScene();
 		// 現在シーン更新
@@ -182,13 +183,22 @@ void ChangeScene()
 		if (gameScene->IsFinished()) {
 			if (gameScene->IsClear()) {
 				// シーン変更
-				scene = Scene::kGame2;
-				// 旧シーンの解放
+				scene = Scene::kClear;
+				// 旧シーンの変更
 				delete gameScene;
 				gameScene = nullptr;
 				// 新シーンの生成と初期化
-				gameScene2 = new GameScene2;
-				gameScene2->Initialize();
+				clearScene = new ClearScene;
+				clearScene->Initialize();
+
+				//// シーン変更
+				//scene = Scene::kGame2;
+				//// 旧シーンの解放
+				//delete gameScene;
+				//gameScene = nullptr;
+				//// 新シーンの生成と初期化
+				//gameScene2 = new GameScene2;
+				//gameScene2->Initialize();
 			}
 			else{
 				// シーン変更
@@ -232,7 +242,7 @@ void ChangeScene()
 			scene = Scene::kTitle;
 			// 旧シーンの変更
 			delete clearScene;
-			titleScene = nullptr;
+			clearScene = nullptr;
 			// 新シーンの生成と初期化
 			titleScene = new TitleScene;
 			titleScene->Initialize();
@@ -260,6 +270,9 @@ void UpdataScene()
 	case Scene::kClear:
 		clearScene->Update();
 		break;
+	case Scene::kOver:
+		overScene->Update();
+		break;
 	}
 }
 
@@ -281,6 +294,9 @@ void DrawScene()
 		break;
 	case Scene::kClear:
 		clearScene->Draw();
+		break;
+	case Scene::kOver:
+		overScene->Draw();
 		break;
 	}
 	

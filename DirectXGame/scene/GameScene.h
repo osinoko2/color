@@ -164,4 +164,7 @@ private: // メンバ変数
 
 	ObjectColor objectColor_;
 	Vector4 color_;
+
+	ObjectColor activeObjectColor_;
+	Vector4 activeColor_;
 };

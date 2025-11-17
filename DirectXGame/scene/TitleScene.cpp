@@ -13,7 +13,7 @@ void TitleScene::Initialize()
 	Timer_ = 0.0f;
 
 	// タイトルを近づける
-	titleWorldTransform_.translation_ = { 0.0f, 0.0f, -40.0f };  // z値を調整して近づける
+	titleWorldTransform_.translation_ = { 0.0f, 5.0f, -40.0f };  // z値を調整して近づける
 	PushSpaceWorldTransform_.translation_ = { 0.0f,0.0f,-20.0f };
 
 	// 天球の生成
@@ -31,12 +31,29 @@ void TitleScene::Update()
 		finished_ = true;
 	}
 
+	if (titleWorldTransform_.translation_.y > 0.0f) {
+		titleWorldTransform_.translation_.y -= 0.1f;
+	}
+
 	Timer_ += 1.0f / 60.0f;
-	float param = std::sin(2.0f * std::numbers::pi_v<float> * Timer_ / kWalklMotionTime);
-	float radian = kWalkMotionAngleStart + kWalkMotionAngleEnd * (param + 1.0f) / 2.0f;
-	titleWorldTransform_.rotation_.y = radian * (std::numbers::pi_v<float> / 90.0f);
+	float param = std::sin(2.0f * std::numbers::pi_v<float> * Timer_ / kMoveMotionTime);
+	float radian = kMoveMotionAngleStart + kMoveMotionAngleEnd * (param + 1.0f) / 2.0f;
+	if(titleWorldTransform_.translation_.y <= 0.0f){
+		titleWorldTransform_.rotation_.x = radian * (std::numbers::pi_v<float> / 90.0f);
+		titleWorldTransform_.rotation_.y = radian * (std::numbers::pi_v<float> / 90.0f);
+	}
+
+	/*if (1.0f > PushSpaceWorldTransform_.translation_.y > -1.0f) {
+		if(){
+			PushSpaceWorldTransform_.translation_.y -= 0.2f;
+		} else if () {
+			PushSpaceWorldTransform_.translation_.y += 0.2f;
+		}
+	}*/
+
 	// 行列計算
 	titleWorldTransform_.UpdateMatrix();
+	//PushSpaceWorldTransform_.UpdateMatrix();
 
 	// 天球の更新
 	skydome_->Update();

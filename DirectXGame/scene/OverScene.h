@@ -7,7 +7,7 @@
 #include "Input.h"
 #include "GameScene.h"
 
-class ClearScene{
+class OverScene {
 public:
 	/// <summary>
 	/// 初期化
@@ -25,18 +25,17 @@ public:
 	void Draw();
 
 	bool IsFinished() const { return finished_; }
-private:
 
+private:
 	bool finished_ = false;
 
 	DirectXCommon* dxCommon_ = nullptr;
 	WorldTransform EnterWorldTransform_;
 	ViewProjection viewProjection_;
-	//天球
+	// 天球
 	Skydome* skydome_ = nullptr;
 	// 3Dモデル
 	Model* modelSkydome_ = nullptr;
 	Model* Entermodel_ = nullptr;
-	Model* ClearBestmodel_ = nullptr;
+	Model* Overmodel_ = nullptr;
 };
-

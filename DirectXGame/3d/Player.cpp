@@ -22,7 +22,6 @@ void Player::Initialize(Model* model, Model* model2, Model* model3, ViewProjecti
 	model_ = model;
 	model2_ = model2;
 	model3_ = model3;
-	// textureHandle_ = textureHandle;
 	viewProjection_ = viewProjection;
 
 	objectColor_.Initialize();
@@ -104,11 +103,11 @@ void Player::MoveInput() {
 	// 接地状態
 	if (onGround_) {
 		// 左右移動操作
-		if (Input::GetInstance()->PushKey(DIK_RIGHTARROW /*D*/) || Input::GetInstance()->PushKey(DIK_LEFTARROW/*A*/)) {
+		if (Input::GetInstance()->PushKey(DIK_RIGHTARROW) || Input::GetInstance()->PushKey(DIK_LEFTARROW) || Input::GetInstance()->PushKey(DIK_D) || Input::GetInstance()->PushKey(DIK_A)) {
 
 			// 左右加速
 			Vector3 acceleration = {};
-			if (Input::GetInstance()->PushKey(DIK_RIGHTARROW/*D*/)) {
+			if (Input::GetInstance()->PushKey(DIK_RIGHTARROW) || Input::GetInstance()->PushKey(DIK_D)) {
 
 				// 左移動中の右入力
 				if (velocity_.x < 0.0f) {
@@ -122,7 +121,7 @@ void Player::MoveInput() {
 					turnFirstRotationY_ = worldTransform_.rotation_.y;
 					turnTimer_ = kLimitRunSpeed;
 				}
-			} else if (Input::GetInstance()->PushKey(DIK_LEFTARROW/*A*/)) {
+			} else if (Input::GetInstance()->PushKey(DIK_LEFTARROW) || Input::GetInstance()->PushKey(DIK_A) ){
 
 				// 右移動中の左入力
 				if (velocity_.x > 0.0f) {
@@ -149,7 +148,7 @@ void Player::MoveInput() {
 			velocity_.y *= (1.0f - kAttenuation);
 			velocity_.z *= (1.0f - kAttenuation);
 		}
-		if (Input::GetInstance()->PushKey(DIK_UPARROW/*W*/)) {
+		if (Input::GetInstance()->PushKey(DIK_UPARROW) || Input::GetInstance()->PushKey(DIK_W)) {
 			// ジャンプ初速
 			velocity_.x += 0;
 			velocity_.y += kJumpAcceleration;
@@ -382,19 +381,6 @@ void Player::MapCollisionUp(CollisionMapInfo& info) {
 		}
 	}
 
-	//// ゴールのあたり判定
-	//indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//		goalHit_ = true;
-	//}
-
-	//indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//	goalHit_ = true;
-	//}
-
 	// ブロックにヒット？
 	if (hit) {
 		MapChipField::IndexSet indexSetNow;
@@ -500,19 +486,6 @@ void Player::MapCollisionDown(CollisionMapInfo& info) {
 		}
 	}
 
-	//// ゴールのあたり判定
-	//indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//	goalHit_ = true;
-	//}
-
-	//indexSet2 = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//	goalHit_ = true;
-	//}
-
 	// ブロックにヒット？
 	if (hit) {
 		MapChipField::IndexSet indexSetNow;
@@ -606,19 +579,6 @@ void Player::MapCollisionLeft(CollisionMapInfo& info) {
 		}
 	}
 
-	//// ゴールのあたり判定
-	//indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//	goalHit_ = true;
-	//}
-
-	//indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//	goalHit_ = true;
-	//}
-
 	if (hit) {
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 		info.movement_.x = std::max(0.0f, (rect.right - worldTransform_.translation_.x) - (kWidth / 2.0f + kBlank));
@@ -707,19 +667,6 @@ void Player::MapCollisionRight(CollisionMapInfo& info) {
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
 		info.movement_.x = std::min(0.0f, (rect.left - worldTransform_.translation_.x) + (kWidth / 2.0f + kBlank));
 	}
-
-	//// ゴールのあたり判定
-	//indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//	goalHit_ = true;
-	//}
-
-	//indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
-	//mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	//if (mapChipType == MapChipType::kGoal) {
-	//	goalHit_ = true;
-	//}
 }
 
 void Player::JudgmentMove(const CollisionMapInfo& info) {
