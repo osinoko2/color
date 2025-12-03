@@ -5,7 +5,7 @@ on:
      - master
 env:
   # リポジトリのルートディレクトリを基点としたソリューションファイルのパス
-  SOLUTION_FILE_PATH: WP0/project/DirectXGame/DirectXGame.sln
+  SOLUTION_FILE_PATH: C:\Users\k023g\Downloads\AL3_DirectX__3D-TD2_enemy (5)\WP0\Generated\Outputs\Release\DirectXGame.exe
   # Visual Studio の構成(Debug / Release)
   CONFIGURATION: Debug
 jobs:
