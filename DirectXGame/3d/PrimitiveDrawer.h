@@ -9,7 +9,9 @@
 #include <string>
 #include <wrl.h>
 
-// 基本プリミティブ描画
+/// <summary>
+/// 基本プリミティブ描画
+/// </summary>
 class PrimitiveDrawer {
 public:
 	// 線分の最大数

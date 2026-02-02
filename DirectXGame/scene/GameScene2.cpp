@@ -92,6 +92,7 @@ void GameScene2::Initialize() {
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
+	// キャラクターの位置
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(5, 18);
 	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(9, 18);
 
@@ -108,7 +109,6 @@ void GameScene2::Initialize() {
 	// 自キャラの初期化
 	player_->Initialize(modelPlayer_,modelPlayer2_,modelPlayer3_,&viewProjection_,playerPosition);
 	player_->SetMapChipField(mapChipField_);
-
 
 	// 天球の生成
 	skydome_ = new Skydome();
@@ -127,36 +127,38 @@ void GameScene2::Initialize() {
 	CameraController::Rect movableArea_ = {12.0f, 100 - 12.0f, 6.0f, 12.0f};
 	cameraController_->SetMovableArea(movableArea_);
 
-
+	// 敵のモデル生成
 	modelEnemy_ = Model::CreateFromOBJ("RedEnemy", true);
 	modelEnemy2_ = Model::CreateFromOBJ("BlueEnemy",true);
 	modelEnemy3_ = Model::CreateFromOBJ("YellowEnemy", true);
 
+	// 敵の位置
 	std::vector<Vector3> enemyPositions = {
 		{8.0f, 18.0f, 0.0f},
 		{8.0f, 16.0f, 0.0f},
 		{8.0f, 14.0f, 0.0f},
-		{27.5f, 8.0f, 0.0f},  // 新しい敵の位置
-		{33.5f, 12.0f, 0.0f},  // 新しい敵の位置
-		{30.0f, 8.0f, 0.0f},  // 新しい敵の位置
-		{20.0f, 5.0f, 0.0f},  // 新しい敵の位置
-		{20.0f, 4.0f, 0.0f},  // 新しい敵の位置
-		{20.0f, 6.0f, 0.0f}   // 新しい敵の位置
+		{27.5f, 8.0f, 0.0f},  
+		{33.5f, 12.0f, 0.0f}, 
+		{30.0f, 8.0f, 0.0f},  
+		{20.0f, 5.0f, 0.0f},  
+		{20.0f, 4.0f, 0.0f},  
+		{20.0f, 6.0f, 0.0f}   
 	};
 
+	// 敵の色
 	std::vector<Enemy::ColorState>enemyColor = {
 		Enemy::ColorState::Yellow,
 		Enemy::ColorState::Yellow,
 		Enemy::ColorState::Yellow,
-		Enemy::ColorState::Blue,    // 新しい敵の色
-		Enemy::ColorState::Blue,   // 新しい敵の色
-		Enemy::ColorState::Blue,  // 新しい敵の色
-		Enemy::ColorState::Red,    // 新しい敵の色
-		Enemy::ColorState::Blue,   // 新しい敵の色
-		Enemy::ColorState::Yellow   // 新しい敵の色
+		Enemy::ColorState::Blue,    
+		Enemy::ColorState::Blue,   
+		Enemy::ColorState::Blue,  
+		Enemy::ColorState::Red,    
+		Enemy::ColorState::Blue,   
+		Enemy::ColorState::Yellow   
 	};
 
-	// 敵
+	// 敵の初期化
 	for (int32_t i= 0; i < 9; ++i) {
 		Enemy*newEnemy = new Enemy();
 
@@ -164,14 +166,15 @@ void GameScene2::Initialize() {
 		enemies_.push_back(newEnemy);
 	}
 
+	// 死亡パーティクルモデル生成・初期化
 	modelDeathParticlse_ = Model::CreateFromOBJ("deathParticle", true);
-
 	deathParticles_ = new DeathParticles();
 	deathParticles_->Initialize(modelDeathParticlse_, &viewProjection_, playerPosition);
 
+	// ゴール生成
 	modelGoal_ = Model::CreateFromOBJ("Goal",true);
 
-
+	// フェーズ設定
 	phase_ = Phase::kPlay;
 
 	// デバッグカメラの生成
@@ -212,11 +215,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -228,11 +231,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新 赤
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks2_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -244,11 +247,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新 青
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks3_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -260,11 +263,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新 黄色
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks4_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -276,11 +279,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新 ゴール
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformGoal_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -305,6 +308,7 @@ void GameScene2::Update() {
 			viewProjection_.TransferMatrix();
 		}
 
+		// ゴール判定
 		if (player_->IsGoalReached()) {
 			AdvanceToNextStage(); // 次のステージに進む
 			isClear_ = true;
@@ -337,11 +341,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -353,11 +357,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新 赤
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks2_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -369,11 +373,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新 青
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks3_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -385,11 +389,11 @@ void GameScene2::Update() {
 		// 縦横ブロック更新 黄色
 		for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks4_) {
 			for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-				if (!worldTransformBlockYoko)
+				if (!worldTransformBlockYoko) {
 					continue;
+				}
 
 				// アフィン変換行列の作成
-				//(MakeAffineMatrix：自分で作った数学系関数)
 				worldTransformBlockYoko->matWorld_ = 
 					MakeAffineMatrix(worldTransformBlockYoko->scale_, worldTransformBlockYoko->rotation_, worldTransformBlockYoko->translation_);
 
@@ -463,8 +467,9 @@ void GameScene2::Draw() {
 	//縦横ブロック描画
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
+			if (!worldTransformBlockYoko) {
 				continue;
+			}
 
 			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
 		}
@@ -473,8 +478,9 @@ void GameScene2::Draw() {
 	//縦横ブロック描画　赤
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks2_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
+			if (!worldTransformBlockYoko) {
 				continue;
+			}
 
 			modelRedBlock_->Draw(*worldTransformBlockYoko, viewProjection_,&objectColor_);
 		}
@@ -483,8 +489,9 @@ void GameScene2::Draw() {
 	////縦横ブロック描画　青
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks3_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
+			if (!worldTransformBlockYoko) {
 				continue;
+			}
 
 			modelBlueBlock_->Draw(*worldTransformBlockYoko, viewProjection_,&objectColor_);
 		}
@@ -493,8 +500,9 @@ void GameScene2::Draw() {
 	//縦横ブロック描画　黄色
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks4_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
+			if (!worldTransformBlockYoko) {
 				continue;
+			}
 
 			modelYellowBlock_->Draw(*worldTransformBlockYoko, viewProjection_,&objectColor_);
 		}
@@ -503,18 +511,20 @@ void GameScene2::Draw() {
 	//縦横ブロック描画　ゴール
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformGoal_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
-			if (!worldTransformBlockYoko)
+			if (!worldTransformBlockYoko) {
 				continue;
+			}
 
 			modelGoal_->Draw(*worldTransformBlockYoko, viewProjection_);
 		}
 	}
 
-
+	// プレイヤーの生存時描画
 	if (!player_->IsDead()) {
 		player_->Draw();
 	}
 
+	// 死亡時パーティクル描画
 	if (deathParticles_) {
 		deathParticles_->Draw();
 	}
@@ -679,12 +689,8 @@ void GameScene2::CheckAllCollisions()
 		// 判定対象1と2の座標
 		AABB aabb1, aabb2;
 
-
 		// 自キャラの座標
 		aabb1 = player_->GetAABB();
-
-
-
 
 		for (Enemy* enemy : enemies_) {
 			// 敵弾の座標
@@ -692,23 +698,17 @@ void GameScene2::CheckAllCollisions()
 
 			// AABB同士の交差判定(
 			if (IsCollision(aabb1, aabb2)) {
-				if (enemy->currentColorState_ == Enemy::ColorState::Red) {
-					if (player_->currentColorState == Player::ColorState::Red) {
-						// 自キャラの衝突判定コールバックを呼び出す
-						player_->OnCollision(enemy);
-					}
+				if (enemy->currentColorState_ == Enemy::ColorState::Red && player_->currentColorState == Player::ColorState::Red) {
+					// 自キャラの衝突判定コールバックを呼び出す
+					player_->OnCollision(enemy);
 				}
-				if (enemy->currentColorState_ == Enemy::ColorState::Blue) {
-					if (player_->currentColorState == Player::ColorState::Blue) {
-						// 自キャラの衝突判定コールバックを呼び出す
-						player_->OnCollision(enemy);
-					}
+				if (enemy->currentColorState_ == Enemy::ColorState::Blue && player_->currentColorState == Player::ColorState::Blue) {
+					// 自キャラの衝突判定コールバックを呼び出す
+					player_->OnCollision(enemy);
 				}
-				if (enemy->currentColorState_ == Enemy::ColorState::Yellow) {
-					if (player_->currentColorState == Player::ColorState::Yellow) {
-						// 自キャラの衝突判定コールバックを呼び出す
-						player_->OnCollision(enemy);
-					}
+				if (enemy->currentColorState_ == Enemy::ColorState::Yellow && player_->currentColorState == Player::ColorState::Yellow) {
+					// 自キャラの衝突判定コールバックを呼び出す
+					player_->OnCollision(enemy);
 				}
 				// 敵弾の衝突判定コールバックを呼び出す
 				enemy->OnCollision(player_);

@@ -6,12 +6,12 @@ void OverScene::Initialize() {
 	viewProjection_.Initialize();
 	// 天球の生成
 	skydome_ = new Skydome();
-	// 天球3Dモデルの生成
+	// モデルの生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
-	// 天球の初期化
-	skydome_->Initialize(modelSkydome_, &viewProjection_);
 	Entermodel_ = Model::CreateFromOBJ("Enter", true);
 	Overmodel_ = Model::CreateFromOBJ("Over", true);
+	// 天球の初期化
+	skydome_->Initialize(modelSkydome_, &viewProjection_);
 }
 
 void OverScene::Update() {
@@ -26,8 +26,8 @@ void OverScene::Draw() {
 	// 天球の描画
 	skydome_->Draw();
 
+	// 文字モデルの描画
 	Entermodel_->Draw(EnterWorldTransform_, viewProjection_);
-
 	Overmodel_->Draw(EnterWorldTransform_, viewProjection_);
 
 	Model::PostDraw();

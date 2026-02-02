@@ -18,7 +18,7 @@
 
 
 /// <summary>
-/// ゲームシーン
+/// ゲームシーン2
 /// </summary>
 class GameScene2 {
 

@@ -8,7 +8,9 @@ struct ConstBufferDataObjectColor {
 	Vector4 color_;
 };
 
-// オブジェクト個別のカラー指定
+/// <summary>
+/// オブジェクト個別のカラー指定
+/// </summary>
 class ObjectColor {
 public:
 	/// <summary>

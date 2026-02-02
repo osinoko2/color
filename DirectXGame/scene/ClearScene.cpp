@@ -20,6 +20,18 @@ void ClearScene::Update() {
 
 	// 天球の更新
 	skydome_->Update();
+
+	Alpha -= numf;
+
+	if (Alpha <= 0.0f && numf > 0.0f) {
+		numf = -numf;
+	}
+
+	if (Alpha >= 1.0f && numf < 0.0f) {
+		numf = -numf;
+	}
+
+	Entermodel_->SetAlpha(Alpha);
 }
 
 void ClearScene::Draw() {

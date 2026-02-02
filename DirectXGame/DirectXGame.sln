@@ -6,10 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXGame", "DirectXGame.vcxproj", "{21B76583-DB5E-4750-B00C-FBCF46ABCE48}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目", "ソリューション項目", "{F575E57D-C49F-45E4-B4B9-AFACBE01A2A4}"
-	ProjectSection(SolutionItems) = preProject
-		Enemy.cpp = Enemy.cpp
-		AABB.h = AABB.h
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

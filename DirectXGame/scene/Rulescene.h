@@ -49,4 +49,10 @@ public:
 
 	uint32_t Rule_ = 0;
 	Sprite* sprite_ = nullptr;
+
+	const float positionWidth = 100.0f;
+
+	const float positionHeight = -150.0f;
+
+	const float timeSpeed = 1.0f / 60.0f;
 };

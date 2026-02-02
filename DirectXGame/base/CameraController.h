@@ -6,6 +6,9 @@
 
 class Player;
 
+/// <summary>
+/// カメラ関係
+/// </summary>
 class CameraController {
 
 public:
@@ -29,12 +32,7 @@ public:
 
 	void SetMovableArea(const Rect& area)
 	{
-		movableArea_ = area; 
-
-		//		movableArea_.left= area.left; 
-		//		movableArea_.right = area.right;
-		//		movableArea_.bottom = area.bottom;
-		//		movableArea_.top = area.top;
+		movableArea_ = area;
 	}
 
 	ViewProjection GetViewPosition();

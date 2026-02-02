@@ -6,14 +6,13 @@
 #include "DebugText.h"
 #include"AABB.h"
 
-/// <summary>
-/// 自キャラ
-/// </summary>
-
 class MapChipField;
 
 class Enemy;
 
+/// <summary>
+/// 自キャラ
+/// </summary>
 class Player {
 public:
 	/// <summary>
@@ -40,12 +39,16 @@ public:
 		this->z += other.z;
 	}
 
+	//Getter
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
-
 	Vector3& GetVelocity() {return velocity_; }
 
+	//Setter
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
+	/// <summary>
+	/// 動きの入力
+	/// </summary>
 	void MoveInput();
 
 
@@ -58,24 +61,39 @@ public:
 		Vector3 movement_;
 	};
 
+	// マップとの当たり判定
 	void MapCollision(CollisionMapInfo& info);
-
 	void MapCollisionUp(CollisionMapInfo& info);
-
 	void MapCollisionDown(CollisionMapInfo& info);
-
 	void MapCollisionLeft(CollisionMapInfo& info);
-
 	void MapCollisionRight(CollisionMapInfo& info);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="info"></param>
 	void JudgmentMove(const CollisionMapInfo& info);
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="info"></param>
 	void CeilingContact(const CollisionMapInfo& info);
 
+	/// <summary>
+	///	回転判断
+	/// </summary>
 	void TurnControll();
 
+	/// <summary>
+	/// 着地判定
+	/// </summary>
+	/// <param name="info"></param>
 	void SwitchGrandState(const CollisionMapInfo& info);
 
+	/// <summary>
+	/// 色判定
+	/// </summary>
 	void SwithColorState();
 
 	// 左右
@@ -117,6 +135,8 @@ public:
 	// デスフラグのGetter
 	bool IsDead()const { return isDead_; }
 
+	void SetDeadFlag(bool isDead) { isDead_ = isDead; } 
+
 	bool IsGoalReached() const { return goalReached_; } // Getter for goalReached_
 
 	void SetGoalReached(bool reached) { goalReached_ = reached; } // Setter for goalReached_
@@ -128,15 +148,16 @@ private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 	// モデル
-	Model* model_ = nullptr;
-	Model* model2_ = nullptr;
-	Model* model3_ = nullptr;
+	Model* modelRed_ = nullptr;
+	Model* modelYellow_ = nullptr;
+	Model* modelBlue_ = nullptr;
 	ViewProjection* viewProjection_ = nullptr;
 
 	Vector3 velocity_ = {};
 	static inline const float kAcceleration = 0.01f;
 	static inline const float kAttenuation = 0.2f;
 	static inline const float kLimitRunSpeed = 1.0f;
+	static inline const float kLimitAttenuation = 1.0f;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 
@@ -158,6 +179,8 @@ private:
 
 	static inline const float kAttenuationLanding = 0.7f;
 
+	static inline const float kUsuallyHeight = 0.0f;
+
 
 	MapChipField* mapChipField_ = nullptr;
 	// キャラクターのあたり判定サイズ
@@ -171,10 +194,30 @@ private:
 
 	bool goalReached_ = false; // ゴールに達したかどうかのフラグ
 
+	const float nowVal = 0.0f;
+	const float minVal = 0.0f;
+	const float maxVal = 1.0f;
+	const float fallLine = -2.5f;
+
+	static inline const float staySpeed = 0.0f;
+
+	static inline const float noDepth = 0.0f; 
+
+	static inline const float noHeight = 0.0f;
+
+	static inline const float noMove = 0.0f;
+
+	static inline const float kMovement = 0.1f;
+
+	static inline const float half = 2.0f;
+
+	static inline const int next = 1;
 
 	// ゴールしたら  Vector3 initialPosition_;
 	/*bool goalHit_ = false;*/
 
 	ObjectColor objectColor_;
 	Vector4 color_;
+
+	Vector3 attenuationVector = {0.0f, -0.1f, 0.0f};
 };

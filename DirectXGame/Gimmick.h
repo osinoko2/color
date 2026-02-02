@@ -1,17 +1,17 @@
+#include "AABB.h"
+#include "DebugText.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "DebugText.h"
-#include "AABB.h"
 
 class MapChipField;
 
 class Player;
 
 /// <summary>
-/// æ•µã‚­ãƒ£ãƒ©
+/// áŠQ•¨
 /// </summary>
-class Enemy {
+class Gimmick {
 public:
 	enum class ColorState {
 		Red,
@@ -20,7 +20,7 @@ public:
 	};
 
 	/// <summary>
-	/// åˆæœŸåŒ–
+	/// ‰Šú‰»
 	/// </summary>
 	/// <param name="model"></param>
 	/// <param name="model2"></param>
@@ -28,35 +28,33 @@ public:
 	/// <param name="viewProjection"></param>
 	/// <param name="positionconst"></param>
 	/// <param name="color"></param>
-	void Initialize(Model* model, Model* model2, Model* model3, ViewProjection* viewProjection, const Vector3& positionconst,ColorState color);
+	void Initialize(Model* model, Model* model2, Model* model3, ViewProjection* viewProjection, const Vector3& positionconst, ColorState color);
 
 	/// <summary>
-	/// æ›´æ–°
+	/// XV
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// æç”»
+	/// •`‰æ
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã«åæ˜ ã•ã›ã‚‹
+	/// ƒ}ƒbƒvƒ`ƒbƒv‚É”½‰f‚³‚¹‚é
 	/// </summary>
 	/// <param name="mapChipField"></param>
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
-	// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
+	// ƒ[ƒ‹ƒhÀ•W‚ğæ“¾
 	Vector3 GetWorldPosition();
 
-	
-
-	// AABBã‚’å–å¾—
+	// AABB‚ğæ“¾
 	AABB GetAABB();
 
 	float x, y, z;
 
-	// += æ¼”ç®—å­ã®ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+	// += ‰‰Zq‚ÌƒI[ƒo[ƒ[ƒh
 	Vector3& operator+=(const Vector3& other) {
 		this->x += other.x;
 		this->y += other.y;
@@ -64,39 +62,37 @@ public:
 	}
 
 	/// <summary>
-	/// å½“ãŸã‚Šåˆ¤å®šã‚’å–ã‚‹
+	/// “–‚½‚è”»’è‚ğæ‚é
 	/// </summary>
 	/// <param name="player"></param>
 	void OnCollision(const Player* player);
 
-
 	ColorState currentColorState_ = ColorState::Red;
 
-
 private:
-    // ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ 
+	// ƒ[ƒ‹ƒhƒgƒ‰ƒ“ƒXƒtƒH[ƒ€
 	WorldTransform worldTransform_;
-	// ãƒ¢ãƒ‡ãƒ«ã®ãƒã‚¤ãƒ³ã‚¿
+	// ƒ‚ƒfƒ‹‚Ìƒ|ƒCƒ“ƒ^
 	Model* model_ = nullptr;
 	Model* model2_ = nullptr;
 	Model* model3_ = nullptr;
-	// ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ã®ãƒã‚¤ãƒ³ã‚¿
+	// ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“‚Ìƒ|ƒCƒ“ƒ^
 	ViewProjection* viewProjection_ = nullptr;
-	// ãƒãƒƒãƒ—ãƒãƒƒãƒ—ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®ãƒã‚¤ãƒ³ã‚¿
+	// ƒ}ƒbƒvƒ`ƒbƒvƒtƒB[ƒ‹ƒh‚Ìƒ|ƒCƒ“ƒ^
 	MapChipField* mapChipField_ = nullptr;
 
-	// æ­©è¡Œã®é€Ÿã•
-	//static inline const float kWalkSpeed = 0.01f;
-	// é€Ÿåº¦
+	// •às‚Ì‘¬‚³
+	// static inline const float kWalkSpeed = 0.01f;
+	// ‘¬“x
 	Vector3 velocity_ = {};
 
-	// æœ€åˆã®è§’åº¦[åº¦]
+	// Å‰‚ÌŠp“x[“x]
 	static inline const float kWalkMotionAngleStart = -7.0f;
-	// æœ€å¾Œã®è§’åº¦[åº¦]
+	// ÅŒã‚ÌŠp“x[“x]
 	static inline const float kWalkMotionAngleEnd = 8.0f;
-	// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å‘¨æœŸã¨ãªã‚‹æ™‚é–“[ç§’]
+	// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌüŠú‚Æ‚È‚éŠÔ[•b]
 	static inline const float kWalkMotionTime = 5.0f;
-	// çµŒéæ™‚é–“
+	// Œo‰ßŠÔ
 	float walkTimer_ = 0.0f;
 
 	static inline const float kWidth = 0.8f;
@@ -105,6 +101,4 @@ private:
 
 	ObjectColor objectColor_;
 	Vector4 color_;
-
-	int32_t hp_ = 2;
 };

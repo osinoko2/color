@@ -7,6 +7,9 @@
 #include "Input.h"
 #include "GameScene.h"
 
+/// <summary>
+/// ゲームクリアシーン
+/// </summary>
 class ClearScene{
 public:
 	/// <summary>
@@ -28,6 +31,8 @@ public:
 private:
 
 	bool finished_ = false;
+	float Alpha = 1.0f;
+	float numf = 0.02f;
 
 	DirectXCommon* dxCommon_ = nullptr;
 	WorldTransform EnterWorldTransform_;

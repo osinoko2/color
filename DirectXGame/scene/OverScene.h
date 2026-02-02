@@ -7,6 +7,9 @@
 #include "Input.h"
 #include "GameScene.h"
 
+/// <summary>
+/// ゲームオーバーシーン
+/// </summary>
 class OverScene {
 public:
 	/// <summary>

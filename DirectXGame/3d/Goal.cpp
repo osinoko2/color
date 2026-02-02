@@ -8,6 +8,7 @@ Goal::~Goal() {
 
 void Goal::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 
+	// パラメータと同期する
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;

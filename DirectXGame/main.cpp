@@ -36,7 +36,7 @@ Scene scene = Scene::kUnknown;
 
 void ChangeScene();
 
-void UpdataScene();
+void UpdateScene();
 
 void DrawScene();
 
@@ -109,7 +109,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		// シーン切り替え
 		ChangeScene();
 		// 現在シーン更新
-		UpdataScene();
+		UpdateScene();
 		// 軸表示の更新
 		axisIndicator->Update();
 		// ImGui受付終了
@@ -200,6 +200,13 @@ void ChangeScene()
 				//gameScene2 = new GameScene2;
 				//gameScene2->Initialize();
 			}
+			/*else if (gameScene->GetReloadRequested() == true) {
+				// シーンリロード
+				delete gameScene;
+				gameScene = nullptr;
+				gameScene = new GameScene;
+				gameScene->Initialize();
+			}*/
 			else{
 				// シーン変更
 				scene = Scene::kGame;
@@ -210,6 +217,17 @@ void ChangeScene()
 				gameScene = new GameScene;
 				gameScene->Initialize();
 			}
+		}
+
+		if (gameScene->GetBackTitleFlag() == true) {
+			// シーン変更
+			scene = Scene::kTitle;
+			// 旧シーンの変更
+			delete gameScene;
+			gameScene = nullptr;
+			// 新シーンの生成と初期化
+			titleScene = new TitleScene;
+			titleScene->Initialize();
 		}
 		break;
 	case Scene::kGame2:
@@ -251,7 +269,7 @@ void ChangeScene()
 	}
 }
 
-void UpdataScene()
+void UpdateScene()
 {
 	switch (scene)
 	{

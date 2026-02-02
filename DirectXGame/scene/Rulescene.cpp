@@ -15,7 +15,7 @@ void RuleScene::Initialize() {
 
 	Rule_ = TextureManager::Load("setumei.png");
 
-	sprite_ = Sprite::Create(Rule_, { 100,-150 });
+	sprite_ = Sprite::Create(Rule_, { positionWidth, positionHeight });
 }
 
 void RuleScene::Update() {
@@ -23,7 +23,7 @@ void RuleScene::Update() {
 		finished_ = true;
 	}
 
-	Timer_ += 1.0f / 60.0f;
+	Timer_ += timeSpeed;
 	//float param = std::sin(2.0f * std::numbers::pi_v<float> * Timer_ / kWalklMotionTime);
 	//float radian = kWalkMotionAngleStart + kWalkMotionAngleEnd * (param + 1.0f) / 2.0f;
 	//WorldTransform_.rotation_.y = radian * (std::numbers::pi_v<float> / 90.0f);

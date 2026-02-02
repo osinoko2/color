@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #ifdef _DEBUG
 #include <d3d12.h>
@@ -9,6 +9,9 @@
 class WinApp;
 class DirectXCommon;
 
+/// <summary>
+/// ImGuiを管理するクラス
+/// </summary>
 class ImGuiManager {
 public:
 	static ImGuiManager* GetInstance();

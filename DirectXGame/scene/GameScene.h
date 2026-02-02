@@ -51,7 +51,7 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	void GenerateBlcoks();
+	void GenerateFieldObjects();
 
 	/// <summary>
 	// 全てのあたり判定を行う
@@ -81,6 +81,11 @@ public: // メンバ関数
 
 	bool IsClear()const { return isClear_; }
 
+	// リロード要求フラグのgetter
+	//bool GetReloadRequested() { return reloadRequested_; }
+
+	bool GetBackTitleFlag() { return backTitleFlag; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -104,6 +109,15 @@ private: // メンバ変数
 	Model* modelEnemy3_ = nullptr;
 	Model* modelGoal_ = nullptr;
 	Model* modelDeathParticlse_ = nullptr;
+
+	// スプライト
+	Sprite* BGsprite_ = nullptr;
+	Sprite* choiceSprite1_ = nullptr;
+	Sprite* choiceSprite2_ = nullptr;
+	uint32_t BG_ = 0;
+	uint32_t backGame = 0;
+	uint32_t backTitle = 0;
+
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
@@ -117,13 +131,13 @@ private: // メンバ変数
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 
 	// 縦横ブロック配列 赤
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks2_;
+	std::vector<std::vector<WorldTransform*>> worldTransformRedBlocks_;
 
 	// 縦横ブロック配列 青
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks3_;
+	std::vector<std::vector<WorldTransform*>> worldTransformBlueBlocks_;
 
 	// 縦横ブロック配列 黄
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks4_;
+	std::vector<std::vector<WorldTransform*>> worldTransformYellowBlocks_;
 
 	// 縦横ブロック配列 ゴール
 	std::vector<std::vector<WorldTransform*>> worldTransformGoal_;
@@ -138,9 +152,10 @@ private: // メンバ変数
 	// 3Dモデル
 	Model* modelSkydome_ = nullptr;
 
-
 	// マップチップフィールド
 	MapChipField* mapChipField_;
+
+	MapChipType mapChipType;
 
 	CameraController* cameraController_=nullptr;
 
@@ -151,6 +166,7 @@ private: // メンバ変数
 	// ゲームのフェーズ(型)
 	enum class Phase{
 		kPlay,   // ゲームプレイ
+		kPause,  // ポーズ画面
 		kDeath,  // デス演出
 		kNextStage,
 	};
@@ -167,4 +183,19 @@ private: // メンバ変数
 
 	ObjectColor activeObjectColor_;
 	Vector4 activeColor_;
+
+	Vector2 point0_ = {0, 0};
+
+	std::vector<Vector3> enemyPositions;
+	std::vector<Enemy::ColorState> enemyColor;
+
+	bool choice[2] = {true, false}; 
+
+	// リロード要求フラグ
+	bool reloadRequested_ = false;
+
+	// ポーズフラグ
+	bool pauseRequested_ = false;
+
+	bool backTitleFlag = false;
 };
