@@ -107,19 +107,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="2d\ImGuiManager.cpp" />
+    <ClCompile Include="3d\Player.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="base\CameraController.cpp" />
     <ClCompile Include="scene\ClearScene.cpp" />
     <ClCompile Include="3d\DeathParticles.cpp" />
     <ClCompile Include="3d\Enemy.cpp" />
-    <ClCompile Include="scene\GameScene2.cpp" />
     <ClCompile Include="3d\Goal.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="3d\mapChipField.cpp" />
     <ClCompile Include="math\MathUtilityForText.cpp" />
     <ClCompile Include="math\myMath.cpp" />
-    <ClCompile Include="3d\Player.cpp" />
+    <ClCompile Include="scene\GameScene2.cpp" />
     <ClCompile Include="scene\Rulescene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="3d\skydome.cpp" />
@@ -138,6 +138,7 @@
     <ClInclude Include="3d\Mesh.h" />
     <ClInclude Include="3d\Model.h" />
     <ClInclude Include="3d\ObjectColor.h" />
+    <ClInclude Include="3d\Player.h" />
     <ClInclude Include="3d\PointLight.h" />
     <ClInclude Include="3d\PrimitiveDrawer.h" />
     <ClInclude Include="3d\SpotLight.h" />
@@ -163,7 +164,6 @@
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="math\myMath.h" />
-    <ClInclude Include="3d\Player.h" />
     <ClInclude Include="scene\Rulescene.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="3d\skydome.h" />
