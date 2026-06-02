@@ -183,6 +183,14 @@ void GameScene2::Initialize() {
 	// 色
 	objectColor_.Initialize();
 	color_ = { 1,1,1,1 };
+
+	BGsprite_ = Sprite::Create(BG_, point0_, {color_});
+	choiceSprite1_ = Sprite::Create(backGame, point0_);
+	choiceSprite2_ = Sprite::Create(backTitle, point0_);
+
+	backTitleFlag = false;
+	choice[0] = true;
+	choice[1] = false;
 }
 
 void GameScene2::Update() {
@@ -327,6 +335,30 @@ void GameScene2::Update() {
 		// 全てのあたり判定を行う
 		CheckAllCollisions();
 		break;
+
+	case Phase::kPause:
+		if (input_->TriggerKey(DIK_UP) || input_->TriggerKey(DIK_W)) {
+			choice[0] = true;
+			choice[1] = false;
+		}
+
+		if (input_->TriggerKey(DIK_DOWN) || input_->TriggerKey(DIK_S)) {
+			choice[0] = false;
+			choice[1] = true;
+		}
+
+		if (choice[0] == true && input_->TriggerKey(DIK_RETURN)) {
+			pauseRequested_ = false;
+			phase_ = Phase::kPlay;
+		}
+
+		if (choice[1] == true && input_->TriggerKey(DIK_RETURN)) {
+			pauseRequested_ = false;
+			backTitleFlag = true;
+		}
+
+		break;
+
 	case Phase::kDeath:
 
 		// 天球の更新
@@ -535,6 +567,12 @@ void GameScene2::Draw() {
 		// 自キャラの描画
 		player_->Draw();
 		break;
+
+	case GameScene2::Phase::kPause :
+		// 自キャラの描画
+		player_->Draw();
+		break;
+
 	case GameScene2::Phase::kDeath:
 		break;
 	}
@@ -551,6 +589,21 @@ void GameScene2::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	
+	switch (phase_) {
+	case Phase::kPlay:
+		break;
+	case Phase::kPause:
+		BGsprite_->Draw();
+		if (choice[0] == true) {
+			choiceSprite1_->Draw();
+		} else {
+			choiceSprite2_->Draw();
+		}
+		break;
+	case Phase::kDeath:
+		break;
+	}
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -738,6 +791,10 @@ void GameScene2::ChangePhase()
 		CheckAllCollisions();
 
 		break;
+	case Phase::kPause:
+
+		break;
+
 	case Phase::kDeath:
 		// デス演出フェーズの処理
 		if (deathParticles_ && deathParticles_->IsFinished()) {

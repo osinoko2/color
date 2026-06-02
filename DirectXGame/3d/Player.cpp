@@ -35,10 +35,10 @@ void Player::Update() {
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
 
-	//*--------- 1,移動入力------------*/
+	//移動入力
 	MoveInput();
 
-	//*----------2,移動量を加味して衝突判定する------------*
+	//移動量を加味して衝突判定する
 	// 衝突情報を初期化
 	CollisionMapInfo collisionMapInfo;
 	// 移動量に速度の値をコピー
@@ -48,26 +48,31 @@ void Player::Update() {
 	// マップ衝突チェック
 	MapCollision(collisionMapInfo);
 
-	//*----------3,判定結果を反映して移動させる------------*
+	// 判定結果を反映して移動させる
 	JudgmentMove(collisionMapInfo);
 
-	//*----------4,天井に接触している場合の処理------------*
+	// 天井に接触している場合の処理
 	CeilingContact(collisionMapInfo);
 
-	//*----------5,壁に接触している場合の処理-----------*
+	// 壁に接触している場合の処理
 
-	//*----------6,接地状態の切り替え-----------*
+	// 接地状態の切り替え
 	SwitchGrandState(collisionMapInfo);
 
-	//*----------7,旋回制御-----------*
+	// 旋回制御
 	TurnControll();
 
-	//-----------8,行列計算----------*
 	// 行列計算
 	worldTransform_.UpdateMatrix();
 
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
-		SwithColorState();
+	if (Input::GetInstance()->TriggerKey(DIK_LCONTROL)) {
+		reverseColorState = false;
+		SwitchColorState();
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_LSHIFT)) {
+		reverseColorState = true;
+		SwitchColorState();
 	}
 
 	color_.w = std::clamp(nowVal, minVal, maxVal);
@@ -148,7 +153,7 @@ void Player::MoveInput() {
 			velocity_.y *= (kLimitAttenuation - kAttenuation);
 			velocity_.z *= (kLimitAttenuation - kAttenuation);
 		}
-		if (Input::GetInstance()->PushKey(DIK_UPARROW) || Input::GetInstance()->PushKey(DIK_W)) {
+		if (Input::GetInstance()->PushKey(DIK_UPARROW) || Input::GetInstance()->PushKey(DIK_W) || Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 			// ジャンプ初速
 			velocity_.y += kJumpAcceleration;
 			// 空中
@@ -196,7 +201,7 @@ void Player::SwitchGrandState(const CollisionMapInfo& info) {
 
 			// 左下点の判定
 			MapChipField::IndexSet indexSet;
-			indexSet =mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
 			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 			if (mapChipType == MapChipType::kBlock) {
 				hit = true;
@@ -209,7 +214,7 @@ void Player::SwitchGrandState(const CollisionMapInfo& info) {
 				hit = true;
 			}
 
-			indexSet =mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
 			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 			if (mapChipType == MapChipType::kRedBlock && currentColorState == ColorState::Red) {
 				hit = true;
@@ -222,7 +227,7 @@ void Player::SwitchGrandState(const CollisionMapInfo& info) {
 				hit = true;
 			}
 
-			indexSet =mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
 			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 			if (mapChipType == MapChipType::kBlueBlock && currentColorState == ColorState::Blue) {
 				hit = true;
@@ -235,7 +240,7 @@ void Player::SwitchGrandState(const CollisionMapInfo& info) {
 				hit = true;
 			}
 
-			indexSet =mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(positonsNew[kLeftBottom] + attenuationVector);
 			mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 			if (mapChipType == MapChipType::kYellowBlock && currentColorState == ColorState::Yellow) {
 				hit = true;
@@ -268,14 +273,26 @@ void Player::SwitchGrandState(const CollisionMapInfo& info) {
 	}
 }
 
-void Player::SwithColorState()
-{
-	if (currentColorState == ColorState::Red) {
+void Player::SwitchColorState(){
+	switch (currentColorState) {
+	case Player::ColorState::Red:
 		currentColorState = ColorState::Blue;
-	} else if (currentColorState == ColorState::Blue) {
+		if (reverseColorState) {
+			currentColorState = ColorState::Yellow;
+		}
+		break;
+	case Player::ColorState::Blue:
 		currentColorState = ColorState::Yellow;
-	} else {
+		if (reverseColorState) {
+			currentColorState = ColorState::Red;
+		}
+		break;
+	case Player::ColorState::Yellow:
 		currentColorState = ColorState::Red;
+		if (reverseColorState) {
+			currentColorState = ColorState::Blue;
+		}
+		break;
 	}
 }
 

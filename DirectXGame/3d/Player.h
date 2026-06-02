@@ -94,7 +94,7 @@ public:
 	/// <summary>
 	/// 色判定
 	/// </summary>
-	void SwithColorState();
+	void SwitchColorState();
 
 	// 左右
 	enum class LRDirection {
@@ -215,6 +215,8 @@ private:
 
 	// ゴールしたら  Vector3 initialPosition_;
 	/*bool goalHit_ = false;*/
+
+	bool reverseColorState = false; // 色の順番を逆にするかどうか
 
 	ObjectColor objectColor_;
 	Vector4 color_;

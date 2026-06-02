@@ -180,6 +180,19 @@ void ChangeScene()
 		}
 		break;
 	case Scene::kGame:
+		if (gameScene->GetBackTitleFlag()) {
+			// シーン変更
+			scene = Scene::kTitle;
+			// 旧シーンの変更
+			delete gameScene;
+			gameScene = nullptr;
+			// 新シーンの生成と初期化
+			titleScene = new TitleScene;
+			titleScene->Initialize();
+
+			break;
+		}
+
 		if (gameScene->IsFinished()) {
 			if (gameScene->IsClear()) {
 				// シーン変更
@@ -218,19 +231,21 @@ void ChangeScene()
 				gameScene->Initialize();
 			}
 		}
-
-		if (gameScene->GetBackTitleFlag() == true) {
+		break;
+	case Scene::kGame2:
+		if (gameScene2->GetBackTitleFlag()) {
 			// シーン変更
 			scene = Scene::kTitle;
 			// 旧シーンの変更
-			delete gameScene;
-			gameScene = nullptr;
+			delete gameScene2;
+			gameScene2 = nullptr;
 			// 新シーンの生成と初期化
 			titleScene = new TitleScene;
 			titleScene->Initialize();
+
+			break;
 		}
-		break;
-	case Scene::kGame2:
+
 		if (gameScene2->IsFinished()) {
 			if (gameScene2->IsClear()) {
 				// シーン変更

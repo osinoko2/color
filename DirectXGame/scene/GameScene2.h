@@ -79,6 +79,8 @@ public: // メンバ関数
 
 	bool IsClear()const { return isClear_; }
 
+	bool GetBackTitleFlag() { return backTitleFlag; }
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -102,6 +104,13 @@ private: // メンバ変数
 	Model* modelEnemy3_ = nullptr;
 	Model* modelGoal_ = nullptr;
 	Model* modelDeathParticlse_ = nullptr;
+	// スプライト
+	Sprite* BGsprite_ = nullptr;
+	Sprite* choiceSprite1_ = nullptr;
+	Sprite* choiceSprite2_ = nullptr;
+	uint32_t BG_ = 0;
+	uint32_t backGame = 0;
+	uint32_t backTitle = 0;
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
@@ -149,6 +158,7 @@ private: // メンバ変数
 	// ゲームのフェーズ(型)
 	enum class Phase{
 		kPlay,   // ゲームプレイ
+		kPause,  // ポーズ画面
 		kDeath,  // デス演出
 		kNextStage,
 	};
@@ -162,5 +172,14 @@ private: // メンバ変数
 
 	ObjectColor objectColor_;
 	Vector4 color_;
+
+	Vector2 point0_ = {0, 0};
+
+	bool choice[2] = {true, false}; 
+
+	// ポーズフラグ
+	bool pauseRequested_ = false;
+
+	bool backTitleFlag = false;
 
 };
